@@ -1,30 +1,37 @@
 import Hotel from "../models/Hotel.js"
+import Room from "../models/Room.js";
 
 export const createHotel = async(req, res, next)=>{
-    const newHotel = new Hotel(req.body)
-    try{
-        const savedHotel = await newHotel.save()
-        res.status(200).json(savedHotel) //200 - cod pt succes
-    }catch(err){
-        next(err);
+    if (req.user.isAdmin) {
+        const newHotel = new Hotel(req.body)
+        try{
+            const savedHotel = await newHotel.save()
+            res.status(200).json(savedHotel) //200 - cod pt succes
+        }catch(err){
+            next(err);
+        }
     }
 }
 
 export const updateHotel = async(req, res, next)=>{
-    try{
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: req.body}, {new:true})
-        res.status(200).json(updatedHotel) //200 - cod pt succes
-    }catch(err){
-        next(err); // 500 - cod pt eroare
+    if (req.user.isAdmin) {
+        try{
+            const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: req.body}, {new:true})
+            res.status(200).json(updatedHotel) //200 - cod pt succes
+        }catch(err){
+            next(err); // 500 - cod pt eroare
+        }
     }
 }
 
 export const deleteHotel = async(req, res, next)=>{
-    try{
-        await Hotel.findByIdAndDelete(req.params.id)
-        res.status(200).json("Hotel has been deleted") //200 - cod pt succes
-    }catch(err){
-        next(err);
+    if (req.user.isAdmin) {
+        try{
+            await Hotel.findByIdAndDelete(req.params.id)
+            res.status(200).json("Hotel has been deleted") //200 - cod pt succes
+        }catch(err){
+            next(err);
+        }
     }
 }
 
