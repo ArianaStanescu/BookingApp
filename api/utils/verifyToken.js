@@ -11,8 +11,8 @@ export const verifyToken = (req,res,next)=>{
             return next(createError(403, "Token is not valid!"));
         req.user = user;
         next()
-    }) 
-}
+    });
+};
 
 export const verifyUser = (req,res,next)=>{
     verifyToken(req,res,next, ()=>{
@@ -21,8 +21,8 @@ export const verifyUser = (req,res,next)=>{
         else{
             return next(createError(403, "You are not authorized"));
         }
-    })
-}
+    });
+};
 
 export const verifyAdmin = (req,res,next)=>{
     verifyToken(req,res,next, ()=>{
@@ -31,5 +31,5 @@ export const verifyAdmin = (req,res,next)=>{
         else{
             return next(createError(403, "You are not authorized"));
         }
-    })
-}
+    });
+};
